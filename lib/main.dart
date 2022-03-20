@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:faker_dart/faker_dart.dart';
 import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
+import 'package:flutter_playground/box_animation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,9 +22,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     scrollController = ScrollController();
-    scrollController.addListener(() {
-
-    });
+    scrollController.addListener(() {});
     super.initState();
   }
 
@@ -44,24 +43,24 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
         body: ImprovedScrolling(
           scrollController: scrollController,
-          onScroll: (scrollOffset) => debugPrint(
-            'Scroll offset: $scrollOffset',
-          ),
-          onMMBScrollStateChanged: (scrolling) => debugPrint(
-            'Is scrolling: $scrolling',
-          ),
-          onMMBScrollCursorPositionUpdate:
-              (localCursorOffset, scrollActivity) => debugPrint(
-            'Cursor position: $localCursorOffset\n'
-            'Scroll activity: $scrollActivity',
-          ),
-          enableMMBScrolling: true,
+          // onScroll: (scrollOffset) => debugPrint(
+          //   'Scroll offset: $scrollOffset',
+          // ),
+          // onMMBScrollStateChanged: (scrolling) => debugPrint(
+          //   'Is scrolling: $scrolling',
+          // ),
+          // onMMBScrollCursorPositionUpdate:
+          //     (localCursorOffset, scrollActivity) => debugPrint(
+          //   'Cursor position: $localCursorOffset\n'
+          //   'Scroll activity: $scrollActivity',
+          // ),
+          // enableMMBScrolling: true,
           enableKeyboardScrolling: true,
-          enableCustomMouseWheelScrolling: true,
-          mmbScrollConfig: MMBScrollConfig(
-            customScrollCursor:
-                useSystemCursor ? null : const DefaultCustomScrollCursor(),
-          ),
+          // enableCustomMouseWheelScrolling: true,
+          // mmbScrollConfig: MMBScrollConfig(
+          //   customScrollCursor:
+          //       useSystemCursor ? null : const DefaultCustomScrollCursor(),
+          // ),
           keyboardScrollConfig: KeyboardScrollConfig(
             homeScrollDurationBuilder: (currentScrollOffset, minScrollOffset) {
               return const Duration(milliseconds: 100);
@@ -70,21 +69,28 @@ class _MyAppState extends State<MyApp> {
               return const Duration(milliseconds: 2000);
             },
           ),
-          customMouseWheelScrollConfig: const CustomMouseWheelScrollConfig(
-            scrollAmountMultiplier: 4.0,
-            scrollDuration: Duration(milliseconds: 350),
-          ),
-          child: CustomScrollView(
-            controller: scrollController,
-            physics: const NeverScrollableScrollPhysics(),
-            slivers: [
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) => Image.network(
-                    faker.image.loremPicsum.image(),
+          // customMouseWheelScrollConfig: const CustomMouseWheelScrollConfig(
+          //   scrollAmountMultiplier: 4.0,
+          //   scrollDuration: Duration(milliseconds: 350),
+          // ),
+          child: Stack(
+            children: [
+              BoxAnimation(
+                scrollController: scrollController,
+              ),
+              CustomScrollView(
+                controller: scrollController,
+                physics: const NeverScrollableScrollPhysics(),
+                slivers: [
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) => Image.network(
+                        faker.image.loremPicsum.image(),
+                      ),
+                      childCount: 10,
+                    ),
                   ),
-                  childCount: 10,
-                ),
+                ],
               ),
             ],
           ),
