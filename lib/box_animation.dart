@@ -21,6 +21,8 @@ class BoxAnimationState extends State<BoxAnimation>
   late Animation _animation;
   late Path _path;
   late Path _path2;
+  late Path _path3;
+
   late double scrollOffset;
 
   @override
@@ -48,6 +50,7 @@ class BoxAnimationState extends State<BoxAnimation>
 
     _path = drawPath(size);
     _path2 = drawPath2(size);
+    _path3 = drawPath3(size);
     return Scaffold(
       body: SingleChildScrollView(
         child: SizedBox(
@@ -91,6 +94,24 @@ class BoxAnimationState extends State<BoxAnimation>
                   height: scrollOffset / maxScrollExtent * 20 + 5,
                 ),
               ),
+              Positioned(
+                top: 0,
+                child: CustomPaint(
+                  painter: PathPainter(_path3),
+                ),
+              ),
+              Positioned(
+                top: calculate(scrollOffset / maxScrollExtent, _path3).dy,
+                left: calculate(scrollOffset / maxScrollExtent, _path3).dx,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blueAccent,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  width: scrollOffset / maxScrollExtent * 20 + 5,
+                  height: scrollOffset / maxScrollExtent * 20 + 5,
+                ),
+              ),
             ],
           ),
         ),
@@ -115,6 +136,13 @@ class BoxAnimationState extends State<BoxAnimation>
     Path path = Path();
     path.moveTo(size.width / 2 + 50, size.height / 2);
     path.lineTo(0, size.height - 50);
+    return path;
+  }
+
+  Path drawPath3(Size size) {
+    Path path = Path();
+    path.moveTo(0, size.height);
+    path.lineTo(size.width, 2 * size.height - 50);
     return path;
   }
 

@@ -75,9 +75,6 @@ class _MyAppState extends State<MyApp> {
           // ),
           child: Stack(
             children: [
-              BoxAnimation(
-                scrollController: scrollController,
-              ),
               CustomScrollView(
                 controller: scrollController,
                 physics: const NeverScrollableScrollPhysics(),
