@@ -18,11 +18,18 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   late ScrollController scrollController;
+  // This key will be associated with the amber box
+  final GlobalKey _key = GlobalKey();
+  // Coordinates
+  double? _x, _y;
 
   @override
   void initState() {
     scrollController = ScrollController();
     scrollController.addListener(() {});
+    Future.delayed(Duration(milliseconds: 40), () {
+      _getOffset(_key);
+    });
     super.initState();
   }
 
@@ -30,6 +37,19 @@ class _MyAppState extends State<MyApp> {
   void dispose() {
     scrollController.dispose();
     super.dispose();
+  }
+
+  // This function is called when the user presses the floating button
+  void _getOffset(GlobalKey key) {
+    RenderBox? box = key.currentContext?.findRenderObject() as RenderBox?;
+    Offset? position = box?.localToGlobal(Offset.zero);
+    if (position != null) {
+      setState(() {
+        _x = position.dx;
+        _y = position.dy;
+      });
+      print(_y);
+    }
   }
 
   @override
@@ -80,12 +100,13 @@ class _MyAppState extends State<MyApp> {
                 physics: const NeverScrollableScrollPhysics(),
                 slivers: [
                   SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) => Image.network(
+                    delegate: SliverChildListDelegate([
+                      Text('Helllo'),
+                      Image.network(
                         faker.image.loremPicsum.image(),
+                        key: _key,
                       ),
-                      childCount: 10,
-                    ),
+                    ]),
                   ),
                 ],
               ),
